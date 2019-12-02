@@ -104,6 +104,9 @@ const desired_output = 19690720;
 
 // since both numbers are in the range [0,99],
 // we iterate on the noun, until desired_output - result < 100
+// Note: since the operations are addition and multiplication of positive integers,
+//   we can use binary search on the desired_output to find the noun faster.
+//   But since there's only 100 possible nouns it's not really necessary.
 let noun, verb;
 for (noun = 0; noun < 100; ++noun) {
   let result = run(preprocess(input, noun, 0));
