@@ -1,8 +1,10 @@
 // get the input
 
 const input = await fetch('https://adventofcode.com/2019/day/2/input')
-	.then(r => r.text()) // convert to text
-	.then(r => r.split(',').filter(x => x).map(Number));	// convert to numbers
+  // convert to text
+  .then(r => r.text()) 
+  // convert to numbers (filter to remove empty values)
+  .then(r => r.split(',').filter(x => x).map(Number));
   
 // part 1
 // idea: execute the program as the question specified
@@ -12,10 +14,10 @@ const input = await fetch('https://adventofcode.com/2019/day/2/input')
 // and preprocess it according to the instructions
 // noun and verb are from part 2
 function preprocess(list, noun = 12, verb = 2) {
-	let result = Array.from(list);
+  let result = Array.from(list);
   result[1] = noun;
   result[2] = verb;
-	return result;
+  return result;
 }
 
 function run(program) {
