@@ -13,6 +13,8 @@ The Javascript source files can be run directly in the browser's developer tools
 
 ### C/C++
 
+C++ source files are written and tested in the C++17 standard.
+
 There is a `Makefile` for this project. If you don't have `clang`/`clang++` installed, set the `CXX`/`CC` variables.
 
 Here's how to use the Makefile:
