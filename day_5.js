@@ -56,9 +56,11 @@ function run(program, input) {
 
 	// used as parameter values
 	let x, y, dest;
+
 	while (true) {
 		// decode instruction
 		let {op, modes} = decode(memory[pc]);
+		++pc;
 
 		if (op == 99)
 			break;
@@ -69,20 +71,20 @@ function run(program, input) {
 			// addition, subtraction
 			case 1:
 			case 2:
-				x = retrieve(memory, memory[pc+1], modes[0]);
-				y = retrieve(memory, memory[pc+2], modes[1]);
+				x = retrieve(memory, memory[pc++], modes[0]);
+				y = retrieve(memory, memory[pc++], modes[1]);
 				// retrieve destination address with immediate mode
-				dest = retrieve(memory, memory[pc+3], 1);
+				dest = retrieve(memory, memory[pc++], 1);
 				break;
 			// input instruction
 			case 3:
-				// retrieve destination address with immediate mode
-				dest = retrieve(memory, memory[pc+1], 1);
 				x = input.shift();
+				// retrieve destination address with immediate mode
+				dest = retrieve(memory, memory[pc++], 1);
 				break;
 			// output instruction
 			case 4:
-				x = retrieve(memory, memory[pc+1], modes[0]);
+				x = retrieve(memory, memory[pc++], modes[0]);
 				break;
 			default:
 				throw new Error(`Unknown op code ${op}`);
@@ -90,21 +92,21 @@ function run(program, input) {
 
 		// execute instructions
 		switch (op) {
+			// addition
 			case 1:
 				memory[dest] = x + y;
-				pc += 4;
 				break;
+			// subtraction
 			case 2:
 				memory[dest] = x * y;
-				pc += 4;
 				break;
+			// read input
 			case 3:
 				memory[dest] = x;
-				pc += 2;
 				break;
+			// output
 			case 4:
 				output.push(x);
-				pc += 2;
 				break;
 		}
 	}
