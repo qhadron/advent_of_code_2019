@@ -86,6 +86,22 @@ function run(program, input) {
 			case 4:
 				x = retrieve(memory, memory[pc++], modes[0]);
 				break;
+			// 2 argument if instructions
+			// jump-if-true, jump-if-false
+			case 5:
+			case 6:
+				x = retrieve(memory, memory[pc++], modes[0]);
+				y = retrieve(memory, memory[pc++], modes[1]);
+				break;
+			// 3 argument if instructions
+			// less-than,equals
+			case 7:
+			case 8:
+				x = retrieve(memory, memory[pc++], modes[0]);
+				y = retrieve(memory, memory[pc++], modes[1]);
+				// retrieve destination address with immediate mode
+				dest = retrieve(memory, memory[pc++], 1);
+				break;
 			default:
 				throw new Error(`Unknown op code ${op}`);
 		}
@@ -108,6 +124,30 @@ function run(program, input) {
 			case 4:
 				output.push(x);
 				break;
+			// jump-if-true
+			case 5:
+				if (x !== 0)
+					pc = y;
+				break;
+			// jump-if-false
+			case 6:
+				if (x == 0)
+					pc = y;
+				break;
+			// less than
+			case 7:
+				if (x < y)
+					memory[dest] = 1;
+				else
+					memory[dest] = 0;
+				break;
+			// equals
+			case 8:
+				if (x == y)
+					memory[dest] = 1;
+				else
+					memory[dest] = 0;
+				break;
 		}
 	}
 	return {output, memory};
@@ -119,4 +159,7 @@ run([1002,4,3,4,33], [1]);
 
 // run program with input of single 1
 const part1 = run(input, [1]).output.pop();
-console.log(part1);
+console.log(`Part 1: ${part1}`);
+
+const part2 = run(input, [5]).output.pop();
+console.log(`Part 2: ${part2}`);
