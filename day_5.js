@@ -161,5 +161,71 @@ run([1002,4,3,4,33], [1]);
 const part1 = run(input, [1]).output.pop();
 console.log(`Part 1: ${part1}`);
 
+
+// part 2 tests
+const tests = [
+	{
+		name: `check equal to 8 (position)`,
+		program: [3,9,8,9,10,9,4,9,99,-1,8],
+		input: [7, 8],
+		expected: [0, 1]
+	},
+	{
+		name: `check less than 8 (position)`,
+		program: [3,9,7,9,10,9,4,9,99,-1,8],
+		input: [8, 7],
+		expected: [0, 1]
+	},
+	{
+		name: `check equal to 8 (immediate)`,
+		program: [3,3,1108,-1,8,3,4,3,99],
+		input: [7, 8],
+		expected: [0, 1]
+	},
+	{
+		name: `check less than 8 (immediate)`,
+		program: [3,3,1107,-1,8,3,4,3,99],
+		input: [8, 7],
+		expected: [0, 1]
+	},
+	{
+		name: `jump test (position)`,
+		program: [3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9],
+		input: [0, 1],
+		expected: [0, 1]
+	},
+	{
+		name: `jump test (immediate)`,
+		program: [3,3,1105,-1,9,1101,0,0,12,4,12,99,1],
+		input: [0, 1],
+		expected: [0, 1]
+	},
+	{
+		name: `comparison with 8`,
+		program: [
+			3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,
+			1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,
+			999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99
+		],
+		input: [7,8,9],
+		expected: [999,1000,1001],
+	}
+];
+
+for (let test of tests) {
+	console.debug(`Running test ${test.name}`);
+	let passed = 0;
+	for (let i = 0; i < test.input.length; ++i) {
+		let {output, memory} = run(test.program, [test.input[i]]);
+		if (output[0] != test.expected[i]) {
+			console.log(`Test ${test.name} failed`);
+			console.debug(`Expected ${test.expected}`, output, memory);
+		} else {
+			passed += 1;
+		}
+	}
+	console.debug(`Passed ${passed}/${test.input.length}`);
+}
+
 const part2 = run(input, [5]).output.pop();
 console.log(`Part 2: ${part2}`);
